@@ -1,0 +1,4 @@
+- implem getByAttrOrderedByAttr
+- implem getByAttrOrderedByAttrLimit
+- @Embedded
+- @Relation with @ForeignKey
