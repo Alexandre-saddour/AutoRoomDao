@@ -153,18 +153,39 @@ private fun generateGetAllOrderBy(params: AutoDaoParams): List<FunSpec> {
 }
 
 private fun generateGetByAttr(params: AutoDaoParams): List<FunSpec> {
-    return params.attributes.flatMap { attrToGet ->
+    val getByAttrSingle = params.attributes.flatMap { attrToGet ->
         listOf(
                 getByAttrsAsSingle_(params.tableName, params.entityType, attrToGet),
-                getByAttrsAsMaybe_(params.tableName, params.entityType, attrToGet),
-                getByAttrsAsFlowable_(params.tableName, params.entityType, attrToGet),
                 getByAttrsLimitAsSingle_(params.tableName, params.entityType, attrToGet),
+                getByAttrsAsSingle(params, attrToGet)
+        )
+    }
+    val getByAttrMaybe = params.attributes.flatMap { attrToGet ->
+        listOf(
+                getByAttrsAsMaybe_(params.tableName, params.entityType, attrToGet),
                 getByAttrsLimitAsMaybe_(params.tableName, params.entityType, attrToGet),
+                getByAttrsAsMaybe(params, attrToGet)
+        )
+    }
+    val getByAttrFlowable = params.attributes.flatMap { attrToGet ->
+        listOf(
+                getByAttrsAsFlowable_(params.tableName, params.entityType, attrToGet),
                 getByAttrsLimitAsFlowable_(params.tableName, params.entityType, attrToGet),
-                getByAttrsAsSingle(params, attrToGet),
-                getByAttrsAsMaybe(params, attrToGet),
                 getByAttrsAsFlowable(params, attrToGet)
         )
+    }
+    return if (params.generateOnlyDefaultRxReturnType) {
+        when (params.defaultRxReturnType) {
+            singleType -> getByAttrSingle
+            maybeType -> getByAttrMaybe
+            flowableType -> getByAttrFlowable
+            else -> throw IllegalArgumentException(
+                    "Unsupported type ${params.defaultRxReturnType} for defaultRxReturnType"
+            )
+        }
+    } else {
+        // Generate all
+        getByAttrSingle + getByAttrMaybe + getByAttrFlowable
     }
 }
 
@@ -182,7 +203,7 @@ private fun generateGetByAttrOrderByAttr(params: AutoDaoParams): List<FunSpec> {
         }
     }
 
-    val orderByAttrMaybe= params.attributes.flatMap { attrToGet ->
+    val orderByAttrMaybe = params.attributes.flatMap { attrToGet ->
         params.attributes.flatMap { orderByAttr ->
             //                    getByAttrsOrderByAttrAscAsSingle(params, attrToGet, orderByAttr)
             listOf(
@@ -970,8 +991,8 @@ private fun getByAttrsOrderedByAttr(
         .build()
 
 private fun getByAttrsOrderedByAsSingle(params: AutoDaoParams,
-                               attrToGetBy: AutoDaoParams.Attr,
-                               attrToOrderBy: AutoDaoParams.Attr
+                                        attrToGetBy: AutoDaoParams.Attr,
+                                        attrToOrderBy: AutoDaoParams.Attr
 ) = getByAttrsOrderedByAttr(
         publicFunctionName = when (singleType) {
             params.defaultRxReturnType -> getByAttrOrderByName(attrToGetBy, attrToOrderBy)
@@ -983,8 +1004,8 @@ private fun getByAttrsOrderedByAsSingle(params: AutoDaoParams,
 )
 
 private fun getByAttrsOrderedByAsMaybe(params: AutoDaoParams,
-                               attrToGetBy: AutoDaoParams.Attr,
-                               attrToOrderBy: AutoDaoParams.Attr
+                                       attrToGetBy: AutoDaoParams.Attr,
+                                       attrToOrderBy: AutoDaoParams.Attr
 ) = getByAttrsOrderedByAttr(
         publicFunctionName = when (maybeType) {
             params.defaultRxReturnType -> getByAttrOrderByName(attrToGetBy, attrToOrderBy)
@@ -996,8 +1017,8 @@ private fun getByAttrsOrderedByAsMaybe(params: AutoDaoParams,
 )
 
 private fun getByAttrsOrderedByAsFlowable(params: AutoDaoParams,
-                               attrToGetBy: AutoDaoParams.Attr,
-                               attrToOrderBy: AutoDaoParams.Attr
+                                          attrToGetBy: AutoDaoParams.Attr,
+                                          attrToOrderBy: AutoDaoParams.Attr
 ) = getByAttrsOrderedByAttr(
         publicFunctionName = when (flowableType) {
             params.defaultRxReturnType -> getByAttrOrderByName(attrToGetBy, attrToOrderBy)
