@@ -1,5 +1,6 @@
 package com.asaddour.autoroomdao
 
+import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
@@ -22,8 +23,21 @@ abstract class AppDatabase : RoomDatabase() {
             instance = Room.databaseBuilder(
                     context,
                     AppDatabase::class.java,
-                    "database_test"
-            ).build()
+                    "database_test")
+                    .addCallback(object : Callback(){
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            AppDatabase.instance
+                                    .users()
+                                    .add(
+                                            User(name = "Joe", age = 3),
+                                            User(name = "William", age = 1),
+                                            User(name = "Jack", age = 4),
+                                            User(name = "Averell", age = 2)
+                                    )
+                                    .subscribe()
+                        }
+                    })
+                    .build()
         }
     }
 
