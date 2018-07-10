@@ -1,1 +1,1 @@
-include ':app', ':autoroomdao', ':dao'
+include ':sampleapp', ':autoroomdao', ':dao'
