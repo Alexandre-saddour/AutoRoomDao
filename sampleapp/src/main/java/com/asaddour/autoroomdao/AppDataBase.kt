@@ -12,7 +12,7 @@ import com.asaddour.autoroomdao.models.User
         version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun users(): Auto_UserDao
+    abstract fun users(): Auto_UserDao // notice "Auto_UserDao" and not "UserDao"
 
     companion object {
         lateinit var instance: AppDatabase
@@ -22,7 +22,8 @@ abstract class AppDatabase : RoomDatabase() {
             instance = Room.databaseBuilder(
                     context,
                     AppDatabase::class.java,
-                    "database_test").build()
+                    "database_test"
+            ).build()
         }
     }
 
