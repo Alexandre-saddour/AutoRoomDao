@@ -12,6 +12,6 @@ annotation class AutoDao(
         val onUpdateConflictStrategy: Int = OnConflictStrategy.ABORT,
         val defaultRxReturnType: KClass<*> = Single::class,
         val generateOnlyDefaultRxReturnType: Boolean = false,
-        val generateOrderBy: Boolean = false
+        val generateOrderBy: Boolean = true
 
 )
