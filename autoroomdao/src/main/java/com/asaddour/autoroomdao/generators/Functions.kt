@@ -986,7 +986,7 @@ private fun getByAttrsOrderedByAsMaybe(params: AutoDaoParams,
                                attrToGetBy: AutoDaoParams.Attr,
                                attrToOrderBy: AutoDaoParams.Attr
 ) = getByAttrsOrderedByAttr(
-        publicFunctionName = when (singleType) {
+        publicFunctionName = when (maybeType) {
             params.defaultRxReturnType -> getByAttrOrderByName(attrToGetBy, attrToOrderBy)
             else -> "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsMaybe"
         },
@@ -999,7 +999,7 @@ private fun getByAttrsOrderedByAsFlowable(params: AutoDaoParams,
                                attrToGetBy: AutoDaoParams.Attr,
                                attrToOrderBy: AutoDaoParams.Attr
 ) = getByAttrsOrderedByAttr(
-        publicFunctionName = when (singleType) {
+        publicFunctionName = when (flowableType) {
             params.defaultRxReturnType -> getByAttrOrderByName(attrToGetBy, attrToOrderBy)
             else -> "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsFlowable"
         },
