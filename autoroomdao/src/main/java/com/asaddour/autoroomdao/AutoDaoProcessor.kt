@@ -76,22 +76,6 @@ class AutoDaoProcessor : AbstractProcessor() {
                     .addModifiers(KModifier.ABSTRACT)
                     .addAnnotation(RoomAnnotationClassName.dao())
                     .addFunctions(daoFunctions(autoDaoParams))
-
-
-//            processingEnv.messager.printMessage(Diagnostic.Kind.WARNING, "element.enclosedElements.size: ${element.enclosedElements.size}")
-//            element.enclosedElements.forEach({
-//                processingEnv.messager.printMessage(Diagnostic.Kind.WARNING, "element.enclosedElements: it:$it")
-//                processingEnv.messager.printMessage(Diagnostic.Kind.WARNING, "element.enclosedElements: it.simpleName: ${it.simpleName}")
-//                processingEnv.messager.printMessage(Diagnostic.Kind.WARNING, "element.enclosedElements: it.simpleName: ${it.asType().asTypeName()}")
-//                processingEnv.messager.printMessage(Diagnostic.Kind.WARNING, "element.enclosedElements: it as TypeElement: ${(it as ExecutableElement).returnType}")
-//                processingEnv.messager.printMessage(Diagnostic.Kind.WARNING, "element.enclosedElements: it as parameters.size: ${(it as ExecutableElement).parameters.size}")
-
-//                processingEnv.messager.printMessage(Diagnostic.Kind.WARNING, "Profondeur 2: enclosingElement: ${it.enclosedElements?.size ?: "null"}")
-//                it.enclosedElements?.forEach({
-//                    processingEnv.messager.printMessage(Diagnostic.Kind.WARNING, "Profondeur 2: iterate: enclosingElement: it:$it")
-//                })
-//            })
-
             generateFile(daoMetaData.packageName, fileName, daoClassBuilder.build())
         }
     }
