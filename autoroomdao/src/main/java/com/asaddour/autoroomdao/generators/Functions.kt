@@ -590,7 +590,8 @@ private fun getAllOrderByAttrDescLimitFlowable_(tableName: String, modelType: Ty
 private fun getAllOrderedByAttr(
         publicFunctionName: String,
         privateFunctionName: String,
-        returnType: ParameterizedTypeName
+        returnType: ParameterizedTypeName,
+        addAutoThreadParam: Boolean = true
 ) = FunSpec
         .builder(publicFunctionName)
         .addParameter(ParameterSpec
@@ -601,23 +602,30 @@ private fun getAllOrderedByAttr(
                 .builder("order", orderType)
                 .defaultValue("Order.ASC")
                 .build())
-        .addParameter(autoThreadParam)
-        .concatIoThreadStatementWith("" +
-                "return if (limit == 0){\n" +
-                "            when (order){\n" +
-                "                Order.ASC -> ${privateFunctionName}Asc_()\n" +
-                "                Order.DESC -> ${privateFunctionName}Desc_()\n" +
-                "            }\n" +
-                "        }\n" +
-                "        else {\n" +
-                "            when (order){\n" +
-                "                Order.ASC -> ${privateFunctionName}Asc_(limit)\n" +
-                "                Order.DESC -> ${privateFunctionName}Desc_(limit)\n" +
-                "            }\n" +
-                "        }" +
-                "")
         .returns(returnType)
+        .apply {
+            val statement = "" +
+                    "return if (limit == 0){\n" +
+                    "            when (order){\n" +
+                    "                Order.ASC -> ${privateFunctionName}Asc_()\n" +
+                    "                Order.DESC -> ${privateFunctionName}Desc_()\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "        else {\n" +
+                    "            when (order){\n" +
+                    "                Order.ASC -> ${privateFunctionName}Asc_(limit)\n" +
+                    "                Order.DESC -> ${privateFunctionName}Desc_(limit)\n" +
+                    "            }\n" +
+                    "        }" +
+                    ""
+            if (addAutoThreadParam) {
+                addParameter(autoThreadParam).concatIoThreadStatementWith(statement)
+            } else {
+                addStatement(statement)
+            }
+        }
         .build()
+
 
 private fun getAllOrderedByAttrAsSingle(params: AutoDaoParams, attr: AutoDaoParams.Attr) =
         getAllOrderedByAttr(
@@ -646,7 +654,8 @@ private fun getAllOrderedByAttrAsFlowable(params: AutoDaoParams, attr: AutoDaoPa
                     else -> "getAllOrderedBy${attr.name.capitalize()}AsFlowable"
                 },
                 privateFunctionName = "getAllOrderBy${attr.name.capitalize()}AsFlowable",
-                returnType = flowableType.parameterizedBy(listType.parameterizedBy(params.entityType))
+                returnType = flowableType.parameterizedBy(listType.parameterizedBy(params.entityType)),
+                addAutoThreadParam = false
         )
 
 
@@ -960,7 +969,8 @@ private fun getByAttrsOrderedByAttr(
         publicFunctionName: String,
         privateFunctionName: String,
         returnType: ParameterizedTypeName,
-        attrToGetBy: AutoDaoParams.Attr
+        attrToGetBy: AutoDaoParams.Attr,
+        addAutoThreadParam: Boolean = true
 ) = FunSpec
         .builder(publicFunctionName)
         .addParameter("${attrToGetBy.name}s", attrToGetBy.type.javaToKotlinType(), KModifier.VARARG)
@@ -972,21 +982,27 @@ private fun getByAttrsOrderedByAttr(
                 .builder("order", orderType)
                 .defaultValue("Order.ASC")
                 .build())
-        .addParameter(autoThreadParam)
-        .concatIoThreadStatementWith("" +
-                "return if (limit == 0){\n" +
-                "            when (order){\n" +
-                "                Order.ASC -> ${privateFunctionName}Asc_(*${attrToGetBy.name}s)\n" +
-                "                Order.DESC -> ${privateFunctionName}Desc_(*${attrToGetBy.name}s)\n" +
-                "            }\n" +
-                "        }\n" +
-                "        else {\n" +
-                "            when (order){\n" +
-                "                Order.ASC -> ${privateFunctionName}Asc_(*${attrToGetBy.name}s, limit = limit)\n" +
-                "                Order.DESC -> ${privateFunctionName}Desc_(*${attrToGetBy.name}s, limit = limit)\n" +
-                "            }\n" +
-                "        }" +
-                "")
+        .apply {
+            val statement = "" +
+                    "return if (limit == 0){\n" +
+                    "            when (order){\n" +
+                    "                Order.ASC -> ${privateFunctionName}Asc_(*${attrToGetBy.name}s)\n" +
+                    "                Order.DESC -> ${privateFunctionName}Desc_(*${attrToGetBy.name}s)\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "        else {\n" +
+                    "            when (order){\n" +
+                    "                Order.ASC -> ${privateFunctionName}Asc_(*${attrToGetBy.name}s, limit = limit)\n" +
+                    "                Order.DESC -> ${privateFunctionName}Desc_(*${attrToGetBy.name}s, limit = limit)\n" +
+                    "            }\n" +
+                    "        }" +
+                    ""
+            if (addAutoThreadParam) {
+                addParameter(autoThreadParam).concatIoThreadStatementWith(statement)
+            } else {
+                addStatement(statement)
+            }
+        }
         .returns(returnType)
         .build()
 
@@ -1026,7 +1042,8 @@ private fun getByAttrsOrderedByAsFlowable(params: AutoDaoParams,
         },
         privateFunctionName = "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsFlowable",
         returnType = flowableType.parameterizedBy(listType.parameterizedBy(params.entityType)),
-        attrToGetBy = attrToGetBy
+        attrToGetBy = attrToGetBy,
+        addAutoThreadParam = false
 )
 
 
