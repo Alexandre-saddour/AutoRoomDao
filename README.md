@@ -65,7 +65,7 @@ And `LIMIT`
 getUserByName("Averell", limit = 10).subscribe()
 ```
 
-Don't forget ORDER BY  
+Don't forget `ORDER BY`  
 
 ```
 // Get all users and order them by name
@@ -77,14 +77,14 @@ getByNameOrderedByAge("Joe", order = Order.DESC).subscribe()
 
 Only one depth of `ORDER BY` is generated, you cannot call something like `getByNameOrderedByAgeOrderedById`  
 
-`@AutoDao` support `@Ignore` annotation.  
+`@AutoDao` supports `@Ignore` annotation.  
 Looking at User entity, `job` carries `@Ignore` annotation:  nothing is generated for this field  
 
 ```
 getUserByJob().subscribe() // does not compile because of @Ignore
 ```
 
-Of course native @Insert, @Update and @Delete are avaible too
+Of course native `@Insert`, `@Update` and `@Delete` are avaible too
 ```
 delete(badUser).subscribe()
 ```

@@ -1,6 +1,28 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+ext {
+    bintrayRepo = "AutoRoomDao"
+    bintrayName = "com.asaddour.autoroomdao"
+    libraryName = "autoroomdao"
+
+    publishedGroupId = "com.asaddour.autoroomdao"
+    artifact = "autoroomdao"
+    libraryVersion = "0.7.0"
+
+    libraryDescription = "An attempt de make Android Room more generics"
+    siteUrl = "https://github.com/Alexandre-saddour/AutoRoomDao"
+    gitUrl = "https://github.com/Alexandre-saddour/AutoRoomDao.git"
+    developerId = "asaddour"
+    developerName = "Alexandre Saddour"
+    developerEmail = "Alexandre Saddour"
+    licenseName = "Apache License 2.0"
+    licenseUrl = "https://github.com/Alexandre-saddour/AutoRoomDao/blob/master/LICENSE"
+    allLicenses = ["Apache-2.0"]
+}
 
 dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
@@ -16,5 +38,14 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$rootProject.ext.roomVersion"
 }
 
+repositories {
+    mavenCentral()
+}
+
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
+
+if (project.rootProject.file('local.properties').exists()){
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+}
