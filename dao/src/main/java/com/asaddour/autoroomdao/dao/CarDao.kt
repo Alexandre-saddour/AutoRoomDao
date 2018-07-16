@@ -1,17 +1,25 @@
 package com.asaddour.autoroomdao.dao
 
+import android.arch.persistence.room.Query
 import com.asaddour.autoroomdao.annotations.AutoDao
-import com.asaddour.autoroomdao.models.User
-import io.reactivex.Maybe
+import com.asaddour.autoroomdao.models.Car
+import io.reactivex.Single
 
 //
 // Demonstrate configuration
 // You can check the readme for more information.
 //
 @AutoDao(
-        entityClass = User::class,
-        defaultRxReturnType = Maybe::class,
+        entityClass = Car::class,
+        defaultRxReturnType = Single::class,
         generateOnlyDefaultRxReturnType = true,
         generateOrderBy = false
 )
-abstract class CarDao
+abstract class CarDao {
+
+    //
+    // Demonstrate that you can still write your own queries
+    //
+    @Query("SELECT name from cars")
+    abstract fun getAllNames(): Single<List<String>>
+}

@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "users")
 data class User(
         @PrimaryKey(autoGenerate = true)
-        var id: Int = 0,
+        var id: Long = 0,
         var name: String = "",
         var age: Int = 0,
 

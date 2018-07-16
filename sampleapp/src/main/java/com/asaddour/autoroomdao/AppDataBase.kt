@@ -5,15 +5,21 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
+import com.asaddour.autoroomdao.dao.Auto_CarDao
 import com.asaddour.autoroomdao.dao.Auto_UserDao
+import com.asaddour.autoroomdao.models.Car
 import com.asaddour.autoroomdao.models.User
 
 @Database(
-        entities = [User::class],
+        entities = [
+            User::class,
+            Car::class
+        ],
         version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun users(): Auto_UserDao // notice "Auto_UserDao" and not "UserDao"
+    abstract fun cars(): Auto_CarDao
 
     companion object {
         lateinit var instance: AppDatabase
@@ -24,7 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context,
                     AppDatabase::class.java,
                     "database_test")
-                    .addCallback(object : Callback(){
+                    .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             AppDatabase.instance
                                     .users()
@@ -34,11 +40,15 @@ abstract class AppDatabase : RoomDatabase() {
                                             User(name = "Jack", age = 4),
                                             User(name = "Averell", age = 2)
                                     )
+                                    .flatMap { userIds ->
+                                        AppDatabase.instance.cars().add(Car(name = "peugeot", userId = userIds.first()))
+                                    }
                                     .subscribe()
                         }
                     })
                     .build()
         }
     }
+
 
 }
