@@ -107,7 +107,7 @@ Default value is `OnConflictStrategy.ABORT`
 Room's Rx implementation support many types.  
 Therefore, AutoDao generate each functions 3 times  
 
-By default, `Single` is used as `defaultRxReturnType` meaning that `getById` you will be generated as: 
+By default, the value of `defaultRxReturnType` is `Single`. Therefore `getById` will be generated as: 
 - Single\<List\<User>> getById(id: Int)
 - Maybe\<List\<User>> getByIdAsMaybe(id: Int)
 - Flowable\<List\<User>> getByIdAsFlowable(id: Int)  
@@ -115,7 +115,7 @@ By default, `Single` is used as `defaultRxReturnType` meaning that `getById` you
 (notice that `getById` returns a `Single`)
   
 If you set `defaultRxReturnType` to `Flowable`, then `getById` will be generated as
-- Single\<List\<User>> getByIdSingle(id: Int)
+- Single\<List\<User>> getByIdAsSingle(id: Int)
 - Maybe\<List\<User>> getByIdAsMaybe(id: Int)
 - Flowable\<List\<User>> getByIdAs(id: Int) 
 
@@ -139,7 +139,7 @@ Flowable<List<User>> getById(id: Int)
 
 With `generateOnlyDefaultRxReturnType` to `false`, functions will be generated 3 times, changing `defaultRxReturnType` will then only affect names, ex with `Flowable`:
 ```
-Single<List<User>> getByIdSingle(id: Int)
+Single<List<User>> getByIdAsSingle(id: Int)
 Maybe<List<User>> getByIdAsMaybe(id: Int)
 Flowable<List<User>> getById(id: Int)
 ``` 
@@ -157,17 +157,17 @@ Unfortunately, this library comes with a constraint.
 AutoRoomDao, generates a class annotated with `@Dao` and then Room will generate a second class.  
 For this reason, we need AutoRoomDao to do its work before room does it own.  
 
-The only solution I found so far is to put the model (annotated with `@Entity` and the Dao (annotated with `@Autoroom`) in a separate module and link it as a dependency of the app module. Thus, we ensure that AutoRoomDao will be first to do its code generation.  
+The only solution I found so far is to put the model (annotated with `@Entity`) and the Dao (annotated with `@Autoroom`) in a separate module and link it as a dependency of the `app` module. Thus, we ensure that AutoRoomDao will be the first to do its code generation.  
 This is an annoying constraint but not a blocking one for my projects.  
 
 Basically it goes like this:  
 
-a) app gradle files contains 
+a) `app` gradle files contains 
 ```
-implementation project(":dao") // this contains User and UserDao
+implementation project(":models") // this contains `User` and `UserDao`, the name does not matter.
 ```  
 
-b) models gradle file contains  
+b) `models` gradle file contains  
 ```
 kapt com.asaddour.autoroomdao:autoroomdao:0.7.0
 compileOnly com.asaddour.autoroomdao:autoroomdao:0.7.0
@@ -182,7 +182,7 @@ You need to give the last one to RoomDatabase.
 ```
 @Database(entities = [User::class], version = 1)
 abstract fun AppDatabase(): RoomDatabase {
-  abstract fun users(): Auto_UserDao
+  abstract fun users(): Auto_UserDao // Notice `Auto_UserDao` and not `UserDao`
 }
 ```
 
@@ -190,5 +190,4 @@ abstract fun AppDatabase(): RoomDatabase {
 Currently only supporting Rx2 (no LiveData)
 
 ### Future work
-- @Embedded
-- @ForeignKey
+- @Embedded to be supported soon.  
