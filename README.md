@@ -5,7 +5,7 @@ An attempt to make Room more generic
 An article has been written in order to present why and in which context this library has been done.  
 Currently still a draft, it will be released very soon. 
 
-###Summary 
+### Summary 
 - Generate many basic database requests (less boilerplate)
 - Auto threading (can be disabled as needed)
 - Support `LIMIT` and `ORDER BY`
@@ -16,7 +16,7 @@ Currently still a draft, it will be released very soon.
 - Proguard removes functions that you don't use
 - 100% kotlin
 
-###Usage
+### Usage
 We will consider this Entity (standard Room Entity, nothing special here).
 
 ```
@@ -89,21 +89,21 @@ Of course native `@Insert`, `@Update` and `@Delete` are avaible too
 delete(badUser).subscribe()
 ```
 
-###Control code generation
+### Control code generation
 You can control code generation with `@AutoDao` parameters
  
-####generateOrderBy
+#### generateOrderBy
 Control if "order by" related functions should be generated  
 Default value: true
 
-####onInsertConflictStrategy and onUpdateConflictStrategy
+#### onInsertConflictStrategy and onUpdateConflictStrategy
 
 As mentionned, AutoDao uses native annotations `@Insert` and `@Update`.  
 You can control their conflict strategy by using `onInsertConflictStrategy` and `onUpdateConflictStrategy`  
 Default value is `OnConflictStrategy.ABORT`
 
 
-####defaultRxReturnType
+#### defaultRxReturnType
 Room's Rx implementation support many types.  
 Therefore, AutoDao generate each functions 3 times  
 
@@ -122,7 +122,7 @@ If you set `defaultRxReturnType` to `Flowable`, then `getById` will be generated
 (notice that `getById` returns a `Flowable`)
 
    
-####generateOnlyDefaultRxReturnType
+#### generateOnlyDefaultRxReturnType
 
 Control if AutoDao should generate each functions 3 times (for `Single`, `Maybe` and `Flowable`)
 Couple of examples:
@@ -148,9 +148,9 @@ Default value is of `generateOnlyDefaultRxReturnType` is `false`
 
 
 
-###Library Setup
+### Library Setup
 
-####1- Gradle dependency + Module creation
+#### 1- Gradle dependency + Module creation
 
 Unfortunately, this library comes with a constraint.  
 
@@ -175,7 +175,7 @@ compileOnly com.asaddour.autoroomdao:autoroomdao:0.7.0
 
 If this is unclear, check the `sampleapp` and `dao` modules in this repository.
 
-####2- Update your database class.
+#### 2- Update your database class.
 
 Annotating a class called `UserDao` with `@AutoDao` generates a second class called `Auto_UserDao`.  
 You need to give the last one to RoomDatabase.
@@ -186,9 +186,9 @@ abstract fun AppDatabase(): RoomDatabase {
 }
 ```
 
-###Limitations
+### Limitations
 Currently only supporting Rx2 (no LiveData)
 
-###Future work
+### Future work
 - @Embedded
 - @ForeignKey
