@@ -12,7 +12,7 @@ ext {
 
     publishedGroupId = "com.asaddour.autoroomdao"
     artifact = "autoroomdao"
-    libraryVersion = "0.7.0"
+    libraryVersion = "0.7.1"
 
     libraryDescription = "An attempt de make Android Room more generics"
     siteUrl = "https://github.com/Alexandre-saddour/AutoRoomDao"
