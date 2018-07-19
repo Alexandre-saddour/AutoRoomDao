@@ -167,8 +167,9 @@ implementation project(":models") // this contains `User` and `UserDao`, the nam
 
 b) `models` gradle file contains  
 ```
-kapt com.asaddour.autoroomdao:autoroomdao:0.7.0
-compileOnly com.asaddour.autoroomdao:autoroomdao:0.7.0
+kapt com.asaddour.autoroomdao:autoroomdao:0.7.1
+compileOnly com.asaddour.autoroomdao:autoroomdao:0.7.1
+compileOnly 'com.squareup:kotlinpoet:0.7.0'
 ```
 
 If this is unclear, check the `sampleapp` and `dao` modules in this repository.
