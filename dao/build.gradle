@@ -25,9 +25,10 @@ dependencies {
 
     // Annotation
 
-    kapt "com.asaddour.autoroomdao:autoroomdao:0.7.0"
-    annotationProcessor "com.asaddour.autoroomdao:autoroomdao:0.7.0"
-    compileOnly "com.asaddour.autoroomdao:autoroomdao:0.7.0"
+    kapt "com.asaddour.autoroomdao:autoroomdao:0.7.1"
+    annotationProcessor "com.asaddour.autoroomdao:autoroomdao:0.7.1"
+    compileOnly "com.asaddour.autoroomdao:autoroomdao:0.7.1"
+    compileOnly 'com.squareup:kotlinpoet:0.7.0'
 
     // Room
     implementation "android.arch.persistence.room:runtime:$rootProject.ext.roomVersion"
