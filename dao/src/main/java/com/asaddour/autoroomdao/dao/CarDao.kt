@@ -1,6 +1,6 @@
 package com.asaddour.autoroomdao.dao
 
-import android.arch.persistence.room.Query
+import androidx.room.Query
 import com.asaddour.autoroomdao.annotations.AutoDao
 import com.asaddour.autoroomdao.models.Car
 import io.reactivex.Single

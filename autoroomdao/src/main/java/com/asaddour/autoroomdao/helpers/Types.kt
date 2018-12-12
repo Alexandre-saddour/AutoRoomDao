@@ -5,8 +5,8 @@ import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.asTypeName
 import javax.lang.model.element.Element
+import kotlin.reflect.jvm.internal.impl.builtins.jvm.JavaToKotlinClassMap
 import kotlin.reflect.jvm.internal.impl.name.FqName
-import kotlin.reflect.jvm.internal.impl.platform.JavaToKotlinClassMap
 
 fun Element.javaToKotlinType(): TypeName =
         asType().asTypeName().javaToKotlinType()

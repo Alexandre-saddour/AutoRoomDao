@@ -3,10 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -24,18 +24,16 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Annotation
-
-    kapt "com.asaddour.autoroomdao:autoroomdao:0.7.1"
-    annotationProcessor "com.asaddour.autoroomdao:autoroomdao:0.7.1"
-    compileOnly "com.asaddour.autoroomdao:autoroomdao:0.7.1"
-    compileOnly 'com.squareup:kotlinpoet:0.7.0'
+    compileOnly project(':autoroomdao')
+    kapt project(':autoroomdao')
+    annotationProcessor project(':autoroomdao')
 
     // Room
-    implementation "android.arch.persistence.room:runtime:$rootProject.ext.roomVersion"
-    kapt "android.arch.persistence.room:compiler:$rootProject.ext.roomVersion"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.ext.roomVersion"
+    implementation 'androidx.room:room-runtime:2.1.0-alpha03'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha03'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha03'
 
     // Rx
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    api 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    api "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
 }

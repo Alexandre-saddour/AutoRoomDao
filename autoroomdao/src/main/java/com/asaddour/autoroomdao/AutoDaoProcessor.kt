@@ -85,7 +85,7 @@ class AutoDaoProcessor : AbstractProcessor() {
                 .builder(packageName, fileName)
                 .addStaticImport("io.reactivex.rxkotlin", "toFlowable")
                 .addStaticImport("io.reactivex.android.schedulers", "AndroidSchedulers")
-                .addStaticImport("android.arch.persistence.room", "OnConflictStrategy")
+                .addStaticImport("androidx.room", "OnConflictStrategy")
                 .addType(daoClass)
                 .build()
 
