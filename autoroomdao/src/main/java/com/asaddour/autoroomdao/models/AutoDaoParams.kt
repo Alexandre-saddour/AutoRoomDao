@@ -18,8 +18,8 @@ import javax.lang.model.type.TypeMirror
 internal data class AutoDaoParams(
         val tableName: String,
         val entityType: TypeName,
-//        val onInsertConflictStrategy: Int,
-//        val onUpdateConflictStrategy: Int,
+        val onInsertConflictStrategy: Int,
+        val onUpdateConflictStrategy: Int,
         val defaultRxReturnType: TypeName,
         val generateOnlyDefaultRxReturnType: Boolean,
         val generateOrderBy: Boolean,
@@ -70,8 +70,8 @@ internal data class AutoDaoParams(
             return AutoDaoParams(
                     tableName = tableName,
                     entityType = entityClassMirror.asTypeName(),
-//                    onInsertConflictStrategy = autoDao.onInsertConflictStrategy,
-//                    onUpdateConflictStrategy = autoDao.onUpdateConflictStrategy,
+                    onInsertConflictStrategy = autoDao.onInsertConflictStrategy,
+                    onUpdateConflictStrategy = autoDao.onUpdateConflictStrategy,
                     defaultRxReturnType = defaultRxReturnType.asTypeName(),
                     generateOnlyDefaultRxReturnType = autoDao.generateOnlyDefaultRxReturnType,
                     generateOrderBy = autoDao.generateOrderBy,
