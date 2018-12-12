@@ -1,16 +1,20 @@
 package com.asaddour.autoroomdao.models
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
 import com.asaddour.autoroomdao.annotations.AutoDao
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.asTypeName
+import sun.rmi.runtime.Log
 import javax.annotation.processing.ProcessingEnvironment
+import javax.lang.model.element.Element
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.Modifier
 import javax.lang.model.type.MirroredTypeException
 import javax.lang.model.type.TypeMirror
+import kotlin.reflect.KClass
 
 //
 // The configuration of the dao to generate
@@ -45,13 +49,19 @@ internal data class AutoDaoParams(
 
             val entityElement = processingEnv.typeUtils.asElement(entityClassMirror)
             val attributes = entityElement.enclosedElements
-                    .filter { element ->
-                        return@filter when {
-                            element.kind == ElementKind.FIELD -> {
-                                val ignoreAnnotation = element.getAnnotation(Ignore::class.java)
-                                ignoreAnnotation == null && !element.modifiers.contains(Modifier.STATIC)
+                    .filter { element -> keepNonStaticField(element) }
+                    .flatMap { element ->
+                        val isEmbedded = element.getAnnotation(Embedded::class.java) != null
+                        when (isEmbedded) {
+                            true -> {
+                                processingEnv.elementUtils
+                                        .getTypeElement(element.asType().toString())
+                                        .enclosedElements
+                                        .filter {
+                                            keepNonStaticField(it)
+                                        }
                             }
-                            else -> false
+                            else -> listOf(element)
                         }
                     }
                     .map { element ->
@@ -77,6 +87,14 @@ internal data class AutoDaoParams(
                     generateOrderBy = autoDao.generateOrderBy,
                     attributes = attributes
             )
+        }
+
+        private fun keepNonStaticField(element: Element) = when {
+            element.kind == ElementKind.FIELD -> {
+                val ignoreAnnotation = element.getAnnotation(Ignore::class.java)
+                ignoreAnnotation == null && !element.modifiers.contains(Modifier.STATIC)
+            }
+            else -> false
         }
 
     }
