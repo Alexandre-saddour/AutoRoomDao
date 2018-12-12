@@ -1,8 +1,8 @@
 package com.asaddour.autoroomdao.models
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
 import com.asaddour.autoroomdao.annotations.AutoDao
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.asTypeName
@@ -18,8 +18,8 @@ import javax.lang.model.type.TypeMirror
 internal data class AutoDaoParams(
         val tableName: String,
         val entityType: TypeName,
-        val onInsertConflictStrategy: Int,
-        val onUpdateConflictStrategy: Int,
+//        val onInsertConflictStrategy: Int,
+//        val onUpdateConflictStrategy: Int,
         val defaultRxReturnType: TypeName,
         val generateOnlyDefaultRxReturnType: Boolean,
         val generateOrderBy: Boolean,
@@ -70,8 +70,8 @@ internal data class AutoDaoParams(
             return AutoDaoParams(
                     tableName = tableName,
                     entityType = entityClassMirror.asTypeName(),
-                    onInsertConflictStrategy = autoDao.onInsertConflictStrategy,
-                    onUpdateConflictStrategy = autoDao.onUpdateConflictStrategy,
+//                    onInsertConflictStrategy = autoDao.onInsertConflictStrategy,
+//                    onUpdateConflictStrategy = autoDao.onUpdateConflictStrategy,
                     defaultRxReturnType = defaultRxReturnType.asTypeName(),
                     generateOnlyDefaultRxReturnType = autoDao.generateOnlyDefaultRxReturnType,
                     generateOrderBy = autoDao.generateOrderBy,

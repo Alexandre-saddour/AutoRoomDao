@@ -18,5 +18,5 @@ internal object RoomAnnotationClassName {
             .build()
 
     internal fun typeConverters() = create("TypeConverters")
-    private fun create(annotationName: String) = ClassName("android.arch.persistence.room", annotationName)
+    private fun create(annotationName: String) = ClassName("androidx.room", annotationName)
 }
