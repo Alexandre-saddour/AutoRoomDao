@@ -186,4 +186,4 @@ abstract fun AppDatabase(): RoomDatabase {
 ```
 
 ### Limitations
-Currently only supporting Rx2 (no LiveData)
+Currently not supporting LiveData
