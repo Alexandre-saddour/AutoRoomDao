@@ -7,7 +7,7 @@ An article has been written in order to present this library:[check it here](htt
 - Generate many basic database requests (less boilerplate)
 - Auto threading (can be disabled as needed)
 - Support `LIMIT` and `ORDER BY`
-- Support `@Ignore` and `@ColumnInfo` 
+- Support `@Ignore`, `@ColumnInfo` and `@Embedded`
 - Code generation is done at compile time
 - Room "static query check" is preserved.
 - Code generation is configurable
@@ -162,13 +162,13 @@ Basically it goes like this:
 
 a) `app` gradle files contains 
 ```
-implementation project(":models") // this contains `User` and `UserDao`, the name does not matter.
+implementation project(":models") // this contains `User` and `UserDao`
 ```  
 
 b) `models` gradle file contains  
 ```
-kapt com.asaddour.autoroomdao:autoroomdao:0.7.1
-compileOnly com.asaddour.autoroomdao:autoroomdao:0.7.1
+kapt com.asaddour.autoroomdao:autoroomdao:0.7.3
+compileOnly com.asaddour.autoroomdao:autoroomdao:0.7.3
 compileOnly 'com.squareup:kotlinpoet:0.7.0'
 ```
 
@@ -177,7 +177,7 @@ If this is unclear, check the `sampleapp` and `dao` modules in this repository.
 #### 2- Update your database class.
 
 Annotating a class called `UserDao` with `@AutoDao` generates a second class called `Auto_UserDao`.  
-You need to give the last one to RoomDatabase.
+You need to give `Auto_UserDao` to RoomDatabase.
 ```
 @Database(entities = [User::class], version = 1)
 abstract fun AppDatabase(): RoomDatabase {
@@ -187,6 +187,3 @@ abstract fun AppDatabase(): RoomDatabase {
 
 ### Limitations
 Currently only supporting Rx2 (no LiveData)
-
-### Future work
-- @Embedded to be supported soon.  
