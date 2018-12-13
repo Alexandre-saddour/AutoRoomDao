@@ -44,7 +44,7 @@ class AutoDaoProcessor : AbstractProcessor() {
         generateOrderEnum()
 
         roundEnvironment.getElementsAnnotatedWith(AutoDao::class.java)
-                .forEach({ element ->
+                .forEach { element ->
                     if (element.kind != ElementKind.CLASS) {
                         throw IllegalArgumentException("AutoRoom: AutoDao annotation can only be applied to classes")
                     }
@@ -53,7 +53,7 @@ class AutoDaoProcessor : AbstractProcessor() {
                             DaoMetaData.from(element as TypeElement, processingEnv),
                             AutoDaoParams.from(element.getAnnotation(AutoDao::class.java), processingEnv)
                     ).let { generateSubDao(it, element) }
-                })
+                }
         return true
     }
 

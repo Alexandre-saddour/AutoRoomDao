@@ -1,5 +1,6 @@
 package com.asaddour.autoroomdao.generators
 
+import androidx.room.OnConflictStrategy
 import com.asaddour.autoroomdao.helpers.RoomAnnotationClassName
 import com.asaddour.autoroomdao.helpers.listType
 import com.asaddour.autoroomdao.helpers.parameterizedBy
@@ -14,21 +15,21 @@ import com.squareup.kotlinpoet.asClassName
 // Native room annotations (Blocking)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//private fun generateOnConflictStrategyAsString(onInsertConflictStrategy: Int) =
-//        when (onInsertConflictStrategy) {
-//            OnConflictStrategy.REPLACE -> "OnConflictStrategy.REPLACE"
-//            OnConflictStrategy.ROLLBACK -> "OnConflictStrategy.ROLLBACK"
-//            OnConflictStrategy.ABORT -> "OnConflictStrategy.ABORT"
-//            OnConflictStrategy.FAIL -> "OnConflictStrategy.FAIL"
-//            OnConflictStrategy.IGNORE -> "OnConflictStrategy.IGNORE"
-//            else -> "OnConflictStrategy.ABORT"
-//        }
+private fun generateOnConflictStrategyAsString(onInsertConflictStrategy: Int) =
+        when (onInsertConflictStrategy) {
+            OnConflictStrategy.REPLACE -> "OnConflictStrategy.REPLACE"
+            OnConflictStrategy.ROLLBACK -> "OnConflictStrategy.ROLLBACK"
+            OnConflictStrategy.ABORT -> "OnConflictStrategy.ABORT"
+            OnConflictStrategy.FAIL -> "OnConflictStrategy.FAIL"
+            OnConflictStrategy.IGNORE -> "OnConflictStrategy.IGNORE"
+            else -> "OnConflictStrategy.ABORT"
+        }
 
 internal fun insertObjBlocking(params: AutoDaoParams) = FunSpec
         .builder("addBlocking")
         .addAnnotation(AnnotationSpec
                 .builder(RoomAnnotationClassName.insert())
-//                .addMember("onConflict = ${generateOnConflictStrategyAsString(params.onInsertConflictStrategy)}")
+                .addMember("onConflict = ${generateOnConflictStrategyAsString(params.onInsertConflictStrategy)}")
                 .build()
         )
         .addParameter("obj", params.entityType)
@@ -40,7 +41,7 @@ internal fun insertObjsBlocking(params: AutoDaoParams) = FunSpec
         .builder("addBlocking")
         .addAnnotation(AnnotationSpec
                 .builder(RoomAnnotationClassName.insert())
-//                .addMember("onConflict = ${generateOnConflictStrategyAsString(params.onInsertConflictStrategy)}")
+                .addMember("onConflict = ${generateOnConflictStrategyAsString(params.onInsertConflictStrategy)}")
                 .build()
         )
         .addParameter("obj", params.entityType, KModifier.VARARG)
@@ -52,7 +53,7 @@ internal fun updateObjBlocking(params: AutoDaoParams) = FunSpec
         .builder("updateBlocking")
         .addAnnotation(AnnotationSpec
                 .builder(RoomAnnotationClassName.update())
-//                .addMember("onConflict = ${generateOnConflictStrategyAsString(params.onUpdateConflictStrategy)}")
+                .addMember("onConflict = ${generateOnConflictStrategyAsString(params.onUpdateConflictStrategy)}")
                 .build()
         )
         .addParameter("obj", params.entityType)
