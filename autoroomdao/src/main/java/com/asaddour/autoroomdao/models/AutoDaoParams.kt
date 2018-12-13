@@ -51,24 +51,24 @@ internal data class AutoDaoParams(
             val attributes = entityElement.enclosedElements
                     .filter { element -> keepNonStaticField(element) }
                     .flatMap { element ->
-                        val isEmbedded = element.getAnnotation(Embedded::class.java) != null
-                        when (isEmbedded) {
-                            true -> {
+                        val embedded = element.getAnnotation(Embedded::class.java)
+                        when (embedded) {
+                            null -> {
+                                listOf(element.toAttr())
+                            }
+                            else -> {
                                 processingEnv.elementUtils
                                         .getTypeElement(element.asType().toString())
                                         .enclosedElements
                                         .filter {
                                             keepNonStaticField(it)
                                         }
+                                        .map { subElement -> subElement.toAttr(embedded.prefix) }
+
                             }
-                            else -> listOf(element)
                         }
-                    }
-                    .map { element ->
-                        val attributName = element.simpleName.toString()
-                        val columnName = element.getAnnotation(ColumnInfo::class.java)?.name
-                                ?: attributName
-                        Attr(columnName, attributName, element.asType().asTypeName())
+
+
                     }
 
             val tableName = run {
@@ -95,6 +95,13 @@ internal data class AutoDaoParams(
                 ignoreAnnotation == null && !element.modifiers.contains(Modifier.STATIC)
             }
             else -> false
+        }
+
+        private fun Element.toAttr(prefix: String? = null): Attr {
+            val attributName = simpleName.toString()
+            val columnName = getAnnotation(ColumnInfo::class.java)?.name
+                    ?: attributName
+            return Attr((prefix ?: "") + columnName, attributName, asType().asTypeName())
         }
 
     }
