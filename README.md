@@ -1,7 +1,6 @@
 ## AutoRoomDao
 
-### Is there any way to create a reusable generic base class DAOs with Android Room?
-Some context about why I wrote this library [here](https://medium.com/@alex.saddour/android-room-automatic-dao-generation-e48661e83c98)
+Room Dao generation based on annotation.
 
 ### Summary 
 - Generate many basic database requests (less boilerplate)
