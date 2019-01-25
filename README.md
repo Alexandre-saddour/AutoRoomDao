@@ -155,9 +155,6 @@ AutoRoomDao, generates a class annotated with `@Dao` and then Room will generate
 For this reason, we need AutoRoomDao to do its work before room does it own.  
 
 The only solution I found so far is to put the model (annotated with `@Entity`) and the Dao (annotated with `@Autoroom`) in a separate module and link it as a dependency of the `app` module. Thus, we ensure that AutoRoomDao will be the first to do its code generation.  
-This is an annoying constraint but not a blocking one for my projects.  
-
-Basically it goes like this:  
 
 a) `app` gradle files contains 
 ```
