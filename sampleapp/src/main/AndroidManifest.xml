@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.asaddour.autoroomdao">
+    package="com.asaddour.sampleapp">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name="com.asaddour.autoroomdao.MainActivity"
+            android:name=".MainActivity"
             android:screenOrientation="portrait"
             >
             <intent-filter>

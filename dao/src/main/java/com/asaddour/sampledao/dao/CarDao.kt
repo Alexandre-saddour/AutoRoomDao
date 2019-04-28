@@ -1,8 +1,8 @@
-package com.asaddour.autoroomdao.dao
+package com.asaddour.sampledao.dao
 
 import androidx.room.Query
 import com.asaddour.autoroomdao.annotations.AutoDao
-import com.asaddour.autoroomdao.models.Car
+import com.asaddour.sampledao.models.Car
 import io.reactivex.Single
 
 //

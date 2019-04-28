@@ -1,7 +1,7 @@
-package com.asaddour.autoroomdao.dao
+package com.asaddour.sampledao.dao
 
 import com.asaddour.autoroomdao.annotations.AutoDao
-import com.asaddour.autoroomdao.models.User
+import com.asaddour.sampledao.models.User
 
 @AutoDao(User::class)
 abstract class UserDao

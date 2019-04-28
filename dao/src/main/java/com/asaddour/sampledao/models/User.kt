@@ -1,4 +1,4 @@
-package com.asaddour.autoroomdao.models
+package com.asaddour.sampledao.models
 
 import androidx.room.*
 

@@ -1,4 +1,4 @@
-package com.asaddour.autoroomdao
+package com.asaddour.sampleapp
 
 import android.app.Activity
 import android.os.Bundle

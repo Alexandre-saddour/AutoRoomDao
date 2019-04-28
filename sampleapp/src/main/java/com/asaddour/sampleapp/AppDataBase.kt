@@ -1,14 +1,14 @@
-package com.asaddour.autoroomdao
+package com.asaddour.sampleapp
 
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.content.Context
-import com.asaddour.autoroomdao.dao.Auto_CarDao
-import com.asaddour.autoroomdao.dao.Auto_UserDao
-import com.asaddour.autoroomdao.models.Car
-import com.asaddour.autoroomdao.models.User
+import com.asaddour.sampledao.dao.Auto_CarDao
+import com.asaddour.sampledao.dao.Auto_UserDao
+import com.asaddour.sampledao.models.Car
+import com.asaddour.sampledao.models.User
 
 @Database(
         entities = [
