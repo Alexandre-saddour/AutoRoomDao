@@ -18,9 +18,7 @@ import com.squareup.kotlinpoet.asClassName
 private fun generateOnConflictStrategyAsString(onInsertConflictStrategy: Int) =
         when (onInsertConflictStrategy) {
             OnConflictStrategy.REPLACE -> "OnConflictStrategy.REPLACE"
-            OnConflictStrategy.ROLLBACK -> "OnConflictStrategy.ROLLBACK"
             OnConflictStrategy.ABORT -> "OnConflictStrategy.ABORT"
-            OnConflictStrategy.FAIL -> "OnConflictStrategy.FAIL"
             OnConflictStrategy.IGNORE -> "OnConflictStrategy.IGNORE"
             else -> "OnConflictStrategy.ABORT"
         }

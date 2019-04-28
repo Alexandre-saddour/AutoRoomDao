@@ -29,9 +29,9 @@ dependencies {
     annotationProcessor project(':autoroomdao')
 
     // Room
-    implementation 'androidx.room:room-runtime:2.1.0-alpha04'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha04'
-    implementation 'androidx.room:room-rxjava2:2.1.0-alpha04'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
 
     // Rx
     api 'io.reactivex.rxjava2:rxkotlin:2.3.0'
