@@ -11,10 +11,11 @@ annotation class AutoDao(
         val tableName: String = "",
         val onInsertConflictStrategy: Int = OnConflictStrategy.ABORT,
         val onUpdateConflictStrategy: Int = OnConflictStrategy.ABORT,
-        val defaultRxReturnType: KClass<*> = Single::class,
+        val defaultReturnType: KClass<*> = Single::class,
         val generateBlockingQueries: Boolean = true,
-        val generateRxQueries: Boolean = true,
-        val generateOnlyDefaultRxReturnType: Boolean = false,
+        val generateRxQueries: Boolean = true, // ignored if generateOnlyDefaultReturnType is true
+        val generateLiveDataQueries: Boolean = true, // ignored if generateOnlyDefaultReturnType is true
+        val generateOnlyDefaultReturnType: Boolean = false,
         val generateOrderBy: Boolean = true
 
 )

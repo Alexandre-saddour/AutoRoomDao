@@ -20,10 +20,11 @@ internal data class AutoDaoParams(
         val containsRelationAnnotation: Boolean,
         val onInsertConflictStrategy: Int,
         val onUpdateConflictStrategy: Int,
-        val defaultRxReturnType: TypeName,
+        val defaultReturnType: TypeName,
         val generateBlockingQueries: Boolean,
         val generateRxQueries: Boolean,
-        val generateOnlyDefaultRxReturnType: Boolean,
+        val generateLiveDataQueries: Boolean,
+        val generateOnlyDefaultReturnType: Boolean,
         val generateOrderBy: Boolean,
         val attributes: List<Attr>
 ) {
@@ -40,7 +41,7 @@ internal data class AutoDaoParams(
             val defaultRxReturnType = try {
                 // This will fail we don't care we want typeMirror
                 // https://area-51.blog/2009/02/13/getting-class-values-from-annotations-in-an-annotationprocessor/
-                autoDao.defaultRxReturnType as TypeMirror
+                autoDao.defaultReturnType as TypeMirror
             } catch (mte: MirroredTypeException) {
                 mte.typeMirror
             }
@@ -86,11 +87,12 @@ internal data class AutoDaoParams(
                     entityType = entityClassMirror.asTypeName(),
                     onInsertConflictStrategy = autoDao.onInsertConflictStrategy,
                     onUpdateConflictStrategy = autoDao.onUpdateConflictStrategy,
-                    defaultRxReturnType = defaultRxReturnType.asTypeName(),
+                    defaultReturnType = defaultRxReturnType.asTypeName(),
                     containsRelationAnnotation = containsRelationAnnotation,
                     generateBlockingQueries = autoDao.generateBlockingQueries,
                     generateRxQueries = autoDao.generateRxQueries,
-                    generateOnlyDefaultRxReturnType = autoDao.generateOnlyDefaultRxReturnType,
+                    generateLiveDataQueries = autoDao.generateLiveDataQueries,
+                    generateOnlyDefaultReturnType = autoDao.generateOnlyDefaultReturnType,
                     generateOrderBy = autoDao.generateOrderBy,
                     attributes = attributes
             )

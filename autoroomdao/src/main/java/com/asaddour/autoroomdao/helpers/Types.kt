@@ -24,13 +24,13 @@ fun TypeName.javaToKotlinType(): TypeName {
 }
 
 
-
 internal val stringType = ClassName("kotlin", "String")
 internal val orderType = ClassName("com.parokit.autoroom", "Order")
 internal val listType = ClassName("kotlin.collections", "List")
 internal val singleType = ClassName("io.reactivex", "Single")
 internal val maybeType = ClassName("io.reactivex", "Maybe")
 internal val flowableType = ClassName("io.reactivex", "Flowable")
+internal val liveDataType = ClassName("androidx.lifecycle", "LiveData")
 
 // Soon to be removed: kotlinpoet will release it.
 internal fun ClassName.parameterizedBy(vararg typeArguments: TypeName) =

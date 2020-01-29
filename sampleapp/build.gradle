@@ -26,12 +26,8 @@ android {
 
 dependencies {
     implementation project(":dao")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    // Room
-    api "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
-    api "androidx.room:room-rxjava2:$roomVersion"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
 
 repositories {

@@ -11,8 +11,8 @@ import io.reactivex.Single
 //
 @AutoDao(
         entityClass = Car::class,
-        defaultRxReturnType = Single::class,
-        generateOnlyDefaultRxReturnType = true,
+        defaultReturnType = Single::class,
+        generateOnlyDefaultReturnType = true,
         generateOrderBy = false
 )
 abstract class CarDao {

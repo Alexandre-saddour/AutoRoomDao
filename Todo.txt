@@ -1,1 +1,1 @@
-- configure modes Rx/LiveData
+- native rx queries now have a real native implementation, use it instead of the custom one
