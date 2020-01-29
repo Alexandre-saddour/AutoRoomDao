@@ -45,23 +45,26 @@ internal fun FunSpec.Builder.concatIoThreadStatementWith(statement: String, vara
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private fun generateGetAll(params: AutoDaoParams): List<FunSpec> {
+    fun singleList() = listOf(
+            getAllSingle_(params),
+            getAllLimitSingle_(params),
+            getAllSingle(params)
+    )
+    fun maybeList() = listOf(
+            getAllMaybe_(params),
+            getAllLimitMaybe_(params),
+            getAllMaybe(params)
+    )
+    fun flowableList() = listOf(
+            getAllFlowable_(params),
+            getAllLimitFlowable_(params),
+            getAllFlowable(params)
+    )
     return if (params.generateOnlyDefaultRxReturnType) {
         when (params.defaultRxReturnType) {
-            singleType -> listOf(
-                    getAllSingle_(params),
-                    getAllLimitSingle_(params),
-                    getAllSingle(params)
-            )
-            maybeType -> listOf(
-                    getAllMaybe_(params),
-                    getAllLimitMaybe_(params),
-                    getAllMaybe(params)
-            )
-            flowableType -> listOf(
-                    getAllFlowable_(params),
-                    getAllLimitFlowable_(params),
-                    getAllFlowable(params)
-            )
+            singleType -> singleList()
+            maybeType -> maybeList()
+            flowableType -> flowableList()
             else -> throw IllegalArgumentException(
                     "Unsupported type ${params.defaultRxReturnType} for defaultRxReturnType"
             )
@@ -71,17 +74,7 @@ private fun generateGetAll(params: AutoDaoParams): List<FunSpec> {
         //
         // Generate all
         //
-        listOf(
-                getAllSingle_(params),
-                getAllMaybe_(params),
-                getAllFlowable_(params),
-                getAllLimitSingle_(params),
-                getAllLimitMaybe_(params),
-                getAllLimitFlowable_(params),
-                getAllSingle(params),
-                getAllMaybe(params),
-                getAllFlowable(params)
-        )
+        singleList() + maybeList() + flowableList()
     }
 }
 
