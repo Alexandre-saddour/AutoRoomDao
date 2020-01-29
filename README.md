@@ -7,6 +7,7 @@ Room Dao generation based on annotation.
 - Auto threading (can be disabled as needed)
 - Support `LIMIT` and `ORDER BY`
 - Support `@Ignore`, `@ColumnInfo` and `@Embedded`
+- Support one to many (using @Relation)
 - Code generation is done at compile time
 - Room "static query check" is preserved.
 - Code generation is configurable
@@ -180,6 +181,3 @@ abstract fun AppDatabase(): RoomDatabase {
   abstract fun users(): Auto_UserDao // Notice `Auto_UserDao` and not `UserDao`
 }
 ```
-
-### Limitations
-Currently not supporting LiveData
