@@ -12,6 +12,7 @@ internal object RoomAnnotationClassName {
     internal fun update() = create("Update")
     internal fun delete() = create("Delete")
     internal fun database() = create("Database")
+    internal fun transaction() = create("Transaction")
     internal fun query(format: String, vararg args: Any) = AnnotationSpec
             .builder(create("Query"))
             .addMember(format, args)

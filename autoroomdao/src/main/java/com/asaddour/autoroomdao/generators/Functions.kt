@@ -9,30 +9,13 @@ import io.reactivex.schedulers.Schedulers
 internal fun daoFunctions(params: AutoDaoParams) = listOf(
 
         //
-        // Native room annotations (Blocking)
+        // Native room annotations
         //
-
-        insertObjBlocking(params),
-        insertObjsBlocking(params),
-        updateObjBlocking(params),
-        deleteObjBlocking(params),
-        deleteObjsBlocking(params),
-        deleteAllBlocking(params),
-
-        //
-        // Native room annotations (Rx)
-        //
-        insertObjRx(params),
-        insertObjsRx(params),
-        updateObjRx(params),
-        deleteObjRx(params),
-        deleteObjsRx(params),
-        deleteAllRx(),
+        *nativeRoomQueries(params).toTypedArray(),
 
         //
         // AutoRoomDao: @Query annotations
         //
-
         *queries(params).toTypedArray()
 )
 
@@ -105,30 +88,30 @@ private fun generateGetAll(params: AutoDaoParams): List<FunSpec> {
 private fun generateGetAllOrderBy(params: AutoDaoParams): List<FunSpec> {
     val listOfSingleFunctions = params.attributes.flatMap {
         listOf(
-                getAllOrderByAttrAscSingle_(params.tableName, params.entityType, it),
-                getAllOrderByAttrDescSingle_(params.tableName, params.entityType, it),
-                getAllOrderByAttrAscLimitSingle_(params.tableName, params.entityType, it),
-                getAllOrderByAttrDescLimitSingle_(params.tableName, params.entityType, it),
+                getAllOrderByAttrAscSingle_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrDescSingle_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrAscLimitSingle_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrDescLimitSingle_(params.tableName, params.entityType, it, params),
                 getAllOrderedByAttrAsSingle(params, it)
         )
     }
 
     val listOfMaybeFunctions = params.attributes.flatMap {
         listOf(
-                getAllOrderByAttrAscMaybe_(params.tableName, params.entityType, it),
-                getAllOrderByAttrDescMaybe_(params.tableName, params.entityType, it),
-                getAllOrderByAttrAscLimitMaybe_(params.tableName, params.entityType, it),
-                getAllOrderByAttrDescLimitMaybe_(params.tableName, params.entityType, it),
+                getAllOrderByAttrAscMaybe_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrDescMaybe_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrAscLimitMaybe_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrDescLimitMaybe_(params.tableName, params.entityType, it, params),
                 getAllOrderedByAttrAsMaybe(params, it)
         )
     }
 
     val listOfFlowableFunctions = params.attributes.flatMap {
         listOf(
-                getAllOrderByAttrAscFlowable_(params.tableName, params.entityType, it),
-                getAllOrderByAttrDescFlowable_(params.tableName, params.entityType, it),
-                getAllOrderByAttrAscLimitFlowable_(params.tableName, params.entityType, it),
-                getAllOrderByAttrDescLimitFlowable_(params.tableName, params.entityType, it),
+                getAllOrderByAttrAscFlowable_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrDescFlowable_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrAscLimitFlowable_(params.tableName, params.entityType, it, params),
+                getAllOrderByAttrDescLimitFlowable_(params.tableName, params.entityType, it, params),
                 getAllOrderedByAttrAsFlowable(params, it)
         )
     }
@@ -155,22 +138,22 @@ private fun generateGetAllOrderBy(params: AutoDaoParams): List<FunSpec> {
 private fun generateGetByAttr(params: AutoDaoParams): List<FunSpec> {
     val getByAttrSingle = params.attributes.flatMap { attrToGet ->
         listOf(
-                getByAttrsAsSingle_(params.tableName, params.entityType, attrToGet),
-                getByAttrsLimitAsSingle_(params.tableName, params.entityType, attrToGet),
+                getByAttrsAsSingle_(params.tableName, params.entityType, attrToGet, params),
+                getByAttrsLimitAsSingle_(params.tableName, params.entityType, attrToGet, params),
                 getByAttrsAsSingle(params, attrToGet)
         )
     }
     val getByAttrMaybe = params.attributes.flatMap { attrToGet ->
         listOf(
-                getByAttrsAsMaybe_(params.tableName, params.entityType, attrToGet),
-                getByAttrsLimitAsMaybe_(params.tableName, params.entityType, attrToGet),
+                getByAttrsAsMaybe_(params.tableName, params.entityType, attrToGet, params),
+                getByAttrsLimitAsMaybe_(params.tableName, params.entityType, attrToGet, params),
                 getByAttrsAsMaybe(params, attrToGet)
         )
     }
     val getByAttrFlowable = params.attributes.flatMap { attrToGet ->
         listOf(
-                getByAttrsAsFlowable_(params.tableName, params.entityType, attrToGet),
-                getByAttrsLimitAsFlowable_(params.tableName, params.entityType, attrToGet),
+                getByAttrsAsFlowable_(params.tableName, params.entityType, attrToGet, params),
+                getByAttrsLimitAsFlowable_(params.tableName, params.entityType, attrToGet, params),
                 getByAttrsAsFlowable(params, attrToGet)
         )
     }
@@ -194,10 +177,10 @@ private fun generateGetByAttrOrderByAttr(params: AutoDaoParams): List<FunSpec> {
         params.attributes.flatMap { orderByAttr ->
             //                    getByAttrsOrderByAttrAscAsSingle(params, attrToGet, orderByAttr)
             listOf(
-                    getByAttrsOrderedByAttrAscSingle_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderedByAttrDescSingle_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderByAttrAscLimitSingle_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderByAttrDescLimitSingle_(params.tableName, params.entityType, attrToGet, orderByAttr),
+                    getByAttrsOrderedByAttrAscSingle_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderedByAttrDescSingle_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderByAttrAscLimitSingle_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderByAttrDescLimitSingle_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
                     getByAttrsOrderedByAsSingle(params, attrToGet, orderByAttr)
             )
         }
@@ -207,10 +190,10 @@ private fun generateGetByAttrOrderByAttr(params: AutoDaoParams): List<FunSpec> {
         params.attributes.flatMap { orderByAttr ->
             //                    getByAttrsOrderByAttrAscAsSingle(params, attrToGet, orderByAttr)
             listOf(
-                    getByAttrsOrderedByAttrAscMaybe_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderedByAttrDescMaybe_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderByAttrAscLimitMaybe_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderByAttrDescLimitMaybe_(params.tableName, params.entityType, attrToGet, orderByAttr),
+                    getByAttrsOrderedByAttrAscMaybe_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderedByAttrDescMaybe_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderByAttrAscLimitMaybe_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderByAttrDescLimitMaybe_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
                     getByAttrsOrderedByAsMaybe(params, attrToGet, orderByAttr)
             )
         }
@@ -219,10 +202,10 @@ private fun generateGetByAttrOrderByAttr(params: AutoDaoParams): List<FunSpec> {
         params.attributes.flatMap { orderByAttr ->
             //                    getByAttrsOrderByAttrAscAsSingle(params, attrToGet, orderByAttr)
             listOf(
-                    getByAttrsOrderedByAttrAscFlowable_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderedByAttrDescFlowable_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderByAttrAscLimitFlowable_(params.tableName, params.entityType, attrToGet, orderByAttr),
-                    getByAttrsOrderByAttrDescLimitFlowable_(params.tableName, params.entityType, attrToGet, orderByAttr),
+                    getByAttrsOrderedByAttrAscFlowable_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderedByAttrDescFlowable_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderByAttrAscLimitFlowable_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
+                    getByAttrsOrderByAttrDescLimitFlowable_(params.tableName, params.entityType, attrToGet, orderByAttr, params),
                     getByAttrsOrderedByAsFlowable(params, attrToGet, orderByAttr)
             )
         }
@@ -248,11 +231,53 @@ private fun generateGetByAttrOrderByAttr(params: AutoDaoParams): List<FunSpec> {
 }
 
 
+private fun nativeRoomQueries(params: AutoDaoParams): List<FunSpec> {
+    // we dont want to generate insert/update/delete if it contains @Relation
+    return when (params.containsRelationAnnotation) {
+        true -> emptyList()
+        else -> run {
+            val blockingQueries = when (params.generateBlockingQueries) {
+                true -> listOf(
+                        //
+                        // Native room annotations (Blocking)
+                        //
+                        insertObjBlocking(params),
+                        insertObjsBlocking(params),
+                        updateObjBlocking(params),
+                        deleteObjBlocking(params),
+                        deleteObjsBlocking(params),
+                        deleteAllBlocking(params)
+                )
+                else -> emptyList()
+            }
+            val rxQueries = when (params.generateRxQueries) {
+                true -> listOf(
+                        //
+                        // Native room annotations (Rx)
+                        //
+                        insertObjRx(params),
+                        insertObjsRx(params),
+                        updateObjRx(params),
+                        deleteObjRx(params),
+                        deleteObjsRx(params),
+                        deleteAllRx()
+                )
+                else -> emptyList()
+            }
+            blockingQueries + rxQueries
+
+        }
+    }
+}
+
 private fun queries(params: AutoDaoParams): List<FunSpec> {
-    return generateGetAll(params) +
-            generateGetAllOrderBy(params) +
-            generateGetByAttr(params) +
-            generateGetByAttrOrderByAttr(params)
+    return when (params.generateRxQueries) {
+        true -> generateGetAll(params) +
+                generateGetAllOrderBy(params) +
+                generateGetByAttr(params) +
+                generateGetByAttrOrderByAttr(params)
+        else -> emptyList()
+    }
 }
 
 
@@ -264,23 +289,33 @@ private fun getAll_(functionName: String,
                     returnType: ParameterizedTypeName,
                     params: AutoDaoParams) = FunSpec
         .builder(functionName)
-        .addAnnotation(RoomAnnotationClassName.query(
-                "\"SELECT * FROM ${params.tableName}\""
-        ))
-        .addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
-        .returns(returnType)
+        .apply {
+            if (params.containsRelationAnnotation) {
+                addAnnotation(RoomAnnotationClassName.transaction())
+            }
+            addAnnotation(RoomAnnotationClassName.query(
+                    "\"SELECT * FROM ${params.tableName}\""
+            ))
+            addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
+            returns(returnType)
+        }
         .build()
 
 private fun getAllLimit_(functionName: String,
                          returnType: ParameterizedTypeName,
                          params: AutoDaoParams) = FunSpec
         .builder(functionName)
-        .addAnnotation(RoomAnnotationClassName.query(
-                "\"SELECT * FROM ${params.tableName} LIMIT :limit\""
-        ))
-        .addParameter("limit", Int::class)
-        .addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
-        .returns(returnType)
+        .apply {
+            if (params.containsRelationAnnotation) {
+                addAnnotation(RoomAnnotationClassName.transaction())
+            }
+            addAnnotation(RoomAnnotationClassName.query(
+                    "\"SELECT * FROM ${params.tableName} LIMIT :limit\""
+            ))
+            addParameter("limit", Int::class)
+            addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
+            returns(returnType)
+        }
         .build()
 
 private fun getAllSingle_(params: AutoDaoParams) =
@@ -383,14 +418,20 @@ private fun getAllOrderByAttr_(
         returnType: ParameterizedTypeName,
         tableName: String,
         order: String,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = FunSpec
         .builder(functionName)
-        .addAnnotation(RoomAnnotationClassName.query(
-                "\"SELECT * FROM $tableName ORDER BY ${attr.collumnName} $order\""
-        ))
-        .addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
-        .returns(returnType)
+        .apply {
+            if (params.containsRelationAnnotation) {
+                addAnnotation(RoomAnnotationClassName.transaction())
+            }
+            addAnnotation(RoomAnnotationClassName.query(
+                    "\"SELECT * FROM $tableName ORDER BY ${attr.collumnName} $order\""
+            ))
+            addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
+            returns(returnType)
+        }
         .build()
 
 
@@ -398,39 +439,45 @@ private fun getAllOrderByAttrSingle_(
         tableName: String,
         order: String,
         modelType: TypeName,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = getAllOrderByAttr_(
         functionName = "getAllOrderBy${attr.name.capitalize()}AsSingle${order.toLowerCase().capitalize()}_",
         returnType = singleType.parameterizedBy(listType.parameterizedBy(modelType)),
         tableName = tableName,
         order = order,
-        attr = attr
+        attr = attr,
+        params = params
 )
 
 private fun getAllOrderByAttrMaybe_(
         tableName: String,
         order: String,
         modelType: TypeName,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = getAllOrderByAttr_(
         functionName = "getAllOrderBy${attr.name.capitalize()}AsMaybe${order.toLowerCase().capitalize()}_",
         returnType = maybeType.parameterizedBy(listType.parameterizedBy(modelType)),
         tableName = tableName,
         order = order,
-        attr = attr
+        attr = attr,
+        params = params
 )
 
 private fun getAllOrderByAttrFlowable_(
         tableName: String,
         order: String,
         modelType: TypeName,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = getAllOrderByAttr_(
         functionName = "getAllOrderBy${attr.name.capitalize()}AsFlowable${order.toLowerCase().capitalize()}_",
         returnType = flowableType.parameterizedBy(listType.parameterizedBy(modelType)),
         tableName = tableName,
         order = order,
-        attr = attr
+        attr = attr,
+        params = params
 )
 
 private fun getAllOrderByAttrLimit_(
@@ -438,153 +485,237 @@ private fun getAllOrderByAttrLimit_(
         returnType: ParameterizedTypeName,
         tableName: String,
         order: String,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = FunSpec
         .builder(functionName)
-        .addParameter("limit", Int::class)
-        .addAnnotation(RoomAnnotationClassName.query(
-                "\"SELECT * FROM $tableName ORDER BY ${attr.collumnName} $order LIMIT :limit\""
-        ))
-        .addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
-        .returns(returnType)
+        .apply {
+            addParameter("limit", Int::class)
+            if (params.containsRelationAnnotation) {
+                addAnnotation(RoomAnnotationClassName.transaction())
+            }
+            addAnnotation(RoomAnnotationClassName.query(
+                    "\"SELECT * FROM $tableName ORDER BY ${attr.collumnName} $order LIMIT :limit\""
+            ))
+            addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
+            returns(returnType)
+        }
         .build()
 
 private fun getAllOrderByAttrLimitSingle_(
         tableName: String,
         order: String,
         modelType: TypeName,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getAllOrderByAttrLimit_(
                 functionName = "getAllOrderBy${attr.name.capitalize()}AsSingle${order.toLowerCase().capitalize()}_",
                 returnType = singleType.parameterizedBy(listType.parameterizedBy(modelType)),
                 tableName = tableName,
                 order = order,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
 private fun getAllOrderByAttrLimitMaybe_(
         tableName: String,
         order: String,
         modelType: TypeName,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getAllOrderByAttrLimit_(
                 functionName = "getAllOrderBy${attr.name.capitalize()}AsMaybe${order.toLowerCase().capitalize()}_",
                 returnType = maybeType.parameterizedBy(listType.parameterizedBy(modelType)),
                 tableName = tableName,
                 order = order,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
 private fun getAllOrderByAttrLimitFlowable_(
         tableName: String,
         order: String,
         modelType: TypeName,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getAllOrderByAttrLimit_(
                 functionName = "getAllOrderBy${attr.name.capitalize()}AsFlowable${order.toLowerCase().capitalize()}_",
                 returnType = flowableType.parameterizedBy(listType.parameterizedBy(modelType)),
                 order = order,
                 tableName = tableName,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrAscSingle_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrAscSingle_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrSingle_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrDescSingle_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrDescSingle_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrSingle_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrAscMaybe_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrAscMaybe_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrMaybe_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrDescMaybe_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrDescMaybe_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrMaybe_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrAscFlowable_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrAscFlowable_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrFlowable_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrDescFlowable_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrDescFlowable_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrFlowable_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrAscLimitSingle_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrAscLimitSingle_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrLimitSingle_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrDescLimitSingle_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrDescLimitSingle_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrLimitSingle_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrAscLimitMaybe_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrAscLimitMaybe_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrLimitMaybe_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrDescLimitMaybe_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrDescLimitMaybe_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrLimitMaybe_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrAscLimitFlowable_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrAscLimitFlowable_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrLimitFlowable_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
-private fun getAllOrderByAttrDescLimitFlowable_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getAllOrderByAttrDescLimitFlowable_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getAllOrderByAttrLimitFlowable_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
-                attr = attr
+                attr = attr,
+                params = params
         )
 
 private fun getAllOrderedByAttr(
@@ -674,15 +805,21 @@ private fun getByAttrsOrderByAttr_(
         tableName: String,
         order: String,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = FunSpec
         .builder(functionName)
-        .addAnnotation(RoomAnnotationClassName.query(
-                "\"SELECT * FROM $tableName WHERE ${attrToGetBy.collumnName} IN (:${attrToGetBy.name}s) ORDER BY ${attrToOrderBy.collumnName} $order\""
-        ))
-        .addParameter("${attrToGetBy.name}s", attrToGetBy.type.javaToKotlinType(), KModifier.VARARG)
-        .addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
-        .returns(returnType)
+        .apply {
+            if (params.containsRelationAnnotation) {
+                addAnnotation(RoomAnnotationClassName.transaction())
+            }
+            addAnnotation(RoomAnnotationClassName.query(
+                    "\"SELECT * FROM $tableName WHERE ${attrToGetBy.collumnName} IN (:${attrToGetBy.name}s) ORDER BY ${attrToOrderBy.collumnName} $order\""
+            ))
+            addParameter("${attrToGetBy.name}s", attrToGetBy.type.javaToKotlinType(), KModifier.VARARG)
+            addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
+            returns(returnType)
+        }
         .build()
 
 private fun getByAttrsOrderByAttrLimit_(
@@ -691,16 +828,22 @@ private fun getByAttrsOrderByAttrLimit_(
         tableName: String,
         order: String,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = FunSpec
         .builder(functionName)
-        .addAnnotation(RoomAnnotationClassName.query(
-                "\"SELECT * FROM $tableName WHERE ${attrToGetBy.collumnName} IN (:${attrToGetBy.name}s) ORDER BY ${attrToOrderBy.collumnName} $order LIMIT :limit\""
-        ))
-        .addParameter("${attrToGetBy.name}s", attrToGetBy.type.javaToKotlinType(), KModifier.VARARG)
-        .addParameter("limit", Int::class)
-        .addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
-        .returns(returnType)
+        .apply {
+            if (params.containsRelationAnnotation) {
+                addAnnotation(RoomAnnotationClassName.transaction())
+            }
+            addAnnotation(RoomAnnotationClassName.query(
+                    "\"SELECT * FROM $tableName WHERE ${attrToGetBy.collumnName} IN (:${attrToGetBy.name}s) ORDER BY ${attrToOrderBy.collumnName} $order LIMIT :limit\""
+            ))
+            addParameter("${attrToGetBy.name}s", attrToGetBy.type.javaToKotlinType(), KModifier.VARARG)
+            addParameter("limit", Int::class)
+            addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
+            returns(returnType)
+        }
         .build()
 
 private fun getByAttrsOrderedByAttrSingle_(
@@ -708,14 +851,16 @@ private fun getByAttrsOrderedByAttrSingle_(
         order: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = getByAttrsOrderByAttr_(
         functionName = "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsSingle${order.toLowerCase().capitalize()}_",
         returnType = singleType.parameterizedBy(listType.parameterizedBy(modelType)),
         tableName = tableName,
         order = order,
         attrToGetBy = attrToGetBy,
-        attrToOrderBy = attrToOrderBy
+        attrToOrderBy = attrToOrderBy,
+        params = params
 )
 
 private fun getByAttrsOrderedByAttrMaybe_(
@@ -723,14 +868,16 @@ private fun getByAttrsOrderedByAttrMaybe_(
         order: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = getByAttrsOrderByAttr_(
         functionName = "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsMaybe${order.toLowerCase().capitalize()}_",
         returnType = maybeType.parameterizedBy(listType.parameterizedBy(modelType)),
         tableName = tableName,
         order = order,
         attrToGetBy = attrToGetBy,
-        attrToOrderBy = attrToOrderBy
+        attrToOrderBy = attrToOrderBy,
+        params = params
 )
 
 private fun getByAttrsOrderedByAttrFlowable_(
@@ -738,14 +885,16 @@ private fun getByAttrsOrderedByAttrFlowable_(
         order: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = getByAttrsOrderByAttr_(
         functionName = "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsFlowable${order.toLowerCase().capitalize()}_",
         returnType = flowableType.parameterizedBy(listType.parameterizedBy(modelType)),
         tableName = tableName,
         order = order,
         attrToGetBy = attrToGetBy,
-        attrToOrderBy = attrToOrderBy
+        attrToOrderBy = attrToOrderBy,
+        params = params
 )
 
 private fun getByAttrsOrderedByAttrSingleLimit_(
@@ -753,7 +902,8 @@ private fun getByAttrsOrderedByAttrSingleLimit_(
         order: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderByAttrLimit_(
                 functionName = "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsSingle${order.toLowerCase().capitalize()}_",
@@ -761,7 +911,8 @@ private fun getByAttrsOrderedByAttrSingleLimit_(
                 tableName = tableName,
                 order = order,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttrMaybeLimit_(
@@ -769,7 +920,8 @@ private fun getByAttrsOrderedByAttrMaybeLimit_(
         order: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderByAttrLimit_(
                 functionName = "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsMaybe${order.toLowerCase().capitalize()}_",
@@ -777,7 +929,8 @@ private fun getByAttrsOrderedByAttrMaybeLimit_(
                 tableName = tableName,
                 order = order,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttrFlowableLimit_(
@@ -785,7 +938,8 @@ private fun getByAttrsOrderedByAttrFlowableLimit_(
         order: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderByAttrLimit_(
                 functionName = "${getByAttrOrderByName(attrToGetBy, attrToOrderBy)}AsFlowable${order.toLowerCase().capitalize()}_",
@@ -793,91 +947,104 @@ private fun getByAttrsOrderedByAttrFlowableLimit_(
                 tableName = tableName,
                 order = order,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttrAscSingle_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrSingle_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttrDescSingle_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrSingle_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttrAscMaybe_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrMaybe_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttrDescMaybe_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrMaybe_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttrAscFlowable_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrFlowable_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttrDescFlowable_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrFlowable_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 
@@ -885,84 +1052,96 @@ private fun getByAttrsOrderByAttrAscLimitSingle_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrSingleLimit_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderByAttrDescLimitSingle_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrSingleLimit_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderByAttrAscLimitMaybe_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrMaybeLimit_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderByAttrDescLimitMaybe_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrMaybeLimit_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderByAttrAscLimitFlowable_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrFlowableLimit_(
                 order = "ASC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderByAttrDescLimitFlowable_(
         tableName: String,
         modelType: TypeName,
         attrToGetBy: AutoDaoParams.Attr,
-        attrToOrderBy: AutoDaoParams.Attr
+        attrToOrderBy: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) =
         getByAttrsOrderedByAttrFlowableLimit_(
                 order = "DESC",
                 tableName = tableName,
                 modelType = modelType,
                 attrToGetBy = attrToGetBy,
-                attrToOrderBy = attrToOrderBy
+                attrToOrderBy = attrToOrderBy,
+        params = params
         )
 
 private fun getByAttrsOrderedByAttr(
@@ -1009,6 +1188,7 @@ private fun getByAttrsOrderedByAttr(
 private fun getByAttrsOrderedByAsSingle(params: AutoDaoParams,
                                         attrToGetBy: AutoDaoParams.Attr,
                                         attrToOrderBy: AutoDaoParams.Attr
+
 ) = getByAttrsOrderedByAttr(
         publicFunctionName = when (singleType) {
             params.defaultRxReturnType -> getByAttrOrderByName(attrToGetBy, attrToOrderBy)
@@ -1057,79 +1237,127 @@ private fun getByAttrs_(
         functionName: String,
         returnType: ParameterizedTypeName,
         tableName: String,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = FunSpec
         .builder(functionName)
-        .addAnnotation(RoomAnnotationClassName.query(
-                "\"SELECT * FROM $tableName WHERE ${attr.collumnName} IN (:${attr.name}s)\""
-        ))
-        .addParameter("${attr.name}s", attr.type.javaToKotlinType(), KModifier.VARARG)
-        .addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
-        .returns(returnType)
+        .apply {
+            if (params.containsRelationAnnotation) {
+                addAnnotation(RoomAnnotationClassName.transaction())
+            }
+            addAnnotation(RoomAnnotationClassName.query(
+                    "\"SELECT * FROM $tableName WHERE ${attr.collumnName} IN (:${attr.name}s)\""
+            ))
+            addParameter("${attr.name}s", attr.type.javaToKotlinType(), KModifier.VARARG)
+            addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
+            returns(returnType)
+        }
         .build()
 
-private fun getByAttrsAsSingle_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getByAttrsAsSingle_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getByAttrs_(
                 "${getByAttrName(attr)}AsSingle_",
                 singleType.parameterizedBy(listType.parameterizedBy(modelType)),
                 tableName,
-                attr
+                attr,
+                params
         )
 
-private fun getByAttrsAsMaybe_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getByAttrsAsMaybe_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getByAttrs_(
                 "${getByAttrName(attr)}AsMaybe_",
                 maybeType.parameterizedBy(listType.parameterizedBy(modelType)),
                 tableName,
-                attr
+                attr,
+                params
         )
 
-private fun getByAttrsAsFlowable_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getByAttrsAsFlowable_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getByAttrs_(
                 "${getByAttrName(attr)}AsFlowable_",
                 flowableType.parameterizedBy(listType.parameterizedBy(modelType)),
                 tableName,
-                attr
+                attr,
+                params
         )
 
 private fun getByAttrsLimit_(
         functionName: String,
         returnType: ParameterizedTypeName,
         tableName: String,
-        attr: AutoDaoParams.Attr
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
 ) = FunSpec
         .builder(functionName)
-        .addAnnotation(RoomAnnotationClassName.query(
-                "\"SELECT * FROM $tableName WHERE ${attr.collumnName} IN (:${attr.name}s) LIMIT :limit\""
-        ))
-        .addParameter("${attr.name}s", attr.type.javaToKotlinType(), KModifier.VARARG)
-        .addParameter("limit", Int::class)
-        .addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
-        .returns(returnType)
+        .apply {
+            if (params.containsRelationAnnotation) {
+                addAnnotation(RoomAnnotationClassName.transaction())
+            }
+            addAnnotation(RoomAnnotationClassName.query(
+                    "\"SELECT * FROM $tableName WHERE ${attr.collumnName} IN (:${attr.name}s) LIMIT :limit\""
+            ))
+            addParameter("${attr.name}s", attr.type.javaToKotlinType(), KModifier.VARARG)
+            addParameter("limit", Int::class)
+            addModifiers(KModifier.PROTECTED, KModifier.ABSTRACT)
+            returns(returnType)
+        }
         .build()
 
-private fun getByAttrsLimitAsSingle_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getByAttrsLimitAsSingle_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getByAttrsLimit_(
                 "${getByAttrName(attr)}AsSingle_",
                 singleType.parameterizedBy(listType.parameterizedBy(modelType)),
                 tableName,
-                attr
+                attr,
+                params
         )
 
-private fun getByAttrsLimitAsMaybe_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getByAttrsLimitAsMaybe_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getByAttrsLimit_(
                 "${getByAttrName(attr)}AsMaybe_",
                 maybeType.parameterizedBy(listType.parameterizedBy(modelType)),
                 tableName,
-                attr
+                attr,
+                params
         )
 
-private fun getByAttrsLimitAsFlowable_(tableName: String, modelType: TypeName, attr: AutoDaoParams.Attr) =
+private fun getByAttrsLimitAsFlowable_(
+        tableName: String,
+        modelType: TypeName,
+        attr: AutoDaoParams.Attr,
+        params: AutoDaoParams
+) =
         getByAttrsLimit_(
                 "${getByAttrName(attr)}AsFlowable_",
                 flowableType.parameterizedBy(listType.parameterizedBy(modelType)),
                 tableName,
-                attr
+                attr,
+                params
         )
 
 private fun getByAttrs(

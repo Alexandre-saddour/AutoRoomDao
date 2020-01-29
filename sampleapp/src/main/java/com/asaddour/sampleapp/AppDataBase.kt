@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.content.Context
 import com.asaddour.sampledao.dao.Auto_CarDao
+import com.asaddour.sampledao.dao.Auto_CompleteUserDao
 import com.asaddour.sampledao.dao.Auto_UserDao
 import com.asaddour.sampledao.models.Car
 import com.asaddour.sampledao.models.User
@@ -20,6 +21,7 @@ import com.asaddour.sampledao.models.User
 abstract class AppDatabase : RoomDatabase() {
     abstract fun users(): Auto_UserDao // notice "Auto_UserDao" and not "UserDao"
     abstract fun cars(): Auto_CarDao
+    abstract fun completeUsers(): Auto_CompleteUserDao
 
     companion object {
         lateinit var instance: AppDatabase
@@ -32,7 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
                     "database_test")
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
-                            AppDatabase.instance
+                            instance
                                     .users()
                                     .add(
                                             User(name = "Joe", age = 3),
@@ -41,7 +43,14 @@ abstract class AppDatabase : RoomDatabase() {
                                             User(name = "Averell", age = 2)
                                     )
                                     .flatMap { userIds ->
-                                        AppDatabase.instance.cars().add(Car(name = "peugeot", userId = userIds.first()))
+                                        instance.cars().add(
+                                                Car(name = "car1", userId = userIds[0]),
+                                                Car(name = "car2", userId = userIds[1]),
+                                                Car(name = "car3", userId = userIds[1]),
+                                                Car(name = "car4", userId = userIds[2]),
+                                                Car(name = "car5", userId = userIds[2]),
+                                                Car(name = "car6", userId = userIds[2])
+                                        )
                                     }
                                     .subscribe()
                         }

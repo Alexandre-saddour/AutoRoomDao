@@ -19,10 +19,13 @@ class MainActivity : Activity() {
                 // First time database needs time to fill up.. this is ugly I know..
                 .delay(3000, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .andThen(Flowable.concat(
-                        example1().toFlowable(),
-                        example2().toFlowable(),
-                        example3().toFlowable(),
-                        example4().toFlowable())
+                        listOf(
+                                example1().toFlowable(),
+                                example2().toFlowable(),
+                                example3().toFlowable(),
+                                example4().toFlowable(),
+                                example5().toFlowable()
+                        ))
                 )
                 .subscribe()
 
@@ -78,5 +81,19 @@ class MainActivity : Activity() {
             .doOnSuccess { names ->
                 Log.d("MainActivity", "example4: found ${names.size} cars")
                 names.forEach { Log.d("MainActivity", "example4:name: $it") }
+            }
+
+    private fun example5() = AppDatabase.instance
+            .completeUsers()
+            .getAll()
+            .doOnSuccess { users ->
+                Log.d("MainActivity", "example5: found ${users.size} complete users")
+                users.forEach { completeUser ->
+                    Log.d("MainActivity", "example5: " +
+                            completeUser.user.name +
+                            " has ${completeUser.cars.size} cars" +
+                            " which are: ${completeUser.cars.map { it.name }}"
+                    )
+                }
             }
 }

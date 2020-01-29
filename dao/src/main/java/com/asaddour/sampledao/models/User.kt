@@ -19,7 +19,17 @@ data class User(
             var street: String,
             // AutoRoomDao supports `ColumnInfo` inside `Embedded`
             @ColumnInfo(name = "city_home")
-            var city: String
-    )
+            var city: String,
+            // AutoRoomDao supports nested `Embedded`
+            @Embedded(prefix = "more_info_")
+            var infos: OtherInfos
+    ){
+        data class OtherInfos(
+                val info1: String,
+                val info2: String
+        )
+    }
+
+
 }
 

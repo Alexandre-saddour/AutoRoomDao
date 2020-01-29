@@ -8,9 +8,12 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.CLASS)
 annotation class AutoDao(
         val entityClass: KClass<*>,
+        val tableName: String = "",
         val onInsertConflictStrategy: Int = OnConflictStrategy.ABORT,
         val onUpdateConflictStrategy: Int = OnConflictStrategy.ABORT,
         val defaultRxReturnType: KClass<*> = Single::class,
+        val generateBlockingQueries: Boolean = true,
+        val generateRxQueries: Boolean = true,
         val generateOnlyDefaultRxReturnType: Boolean = false,
         val generateOrderBy: Boolean = true
 

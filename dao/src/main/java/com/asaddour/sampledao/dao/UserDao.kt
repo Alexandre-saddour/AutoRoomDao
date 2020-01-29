@@ -5,3 +5,4 @@ import com.asaddour.sampledao.models.User
 
 @AutoDao(User::class)
 abstract class UserDao
+
